@@ -1,0 +1,76 @@
+response <- read.csv(file = "~/Downloads/response.csv",header = T)
+head(response)
+str(response)
+
+response1 <- data.frame(response)
+str(response1)
+
+group_age <- group_by(response1, Age)
+group_age
+summarise(group_age ,count =n(), sum_y = sum(complimented))
+
+
+group_age %>% group_by(Age,purpose) %>% summarise(n=n())
+count(response1, Class, encourage)
+
+
+group_class <- group_by(response1, Class)
+summarise(group_class ,count =n(), sum_y = sum(complimented))
+
+
+encourage2 <- filter(response1 , encourage ==2)
+encourage2
+
+
+
+
+
+
+
+
+str(response1)
+
+response1$Class <- as.factor(response1$Class)
+response1$purpose  <- as.factor(response1$purpose)
+response1$encourage <- as.factor(response1$encourage)
+response1$gaveup <- as.factor(response1$gaveup)
+response1$complimented <- as.factor(response1$complimented)
+response1$confident <- as.factor(response1$confident)
+response1$motivated  <- as.factor(response1$motivated)
+response1$feedback <- as.factor(response1$feedback)
+
+str(response1)
+summarise(group_age ,count =n(), sum_y = sum(complimented))
+summarise(group_class ,count =n(), sum_y = sum(complimented))
+
+
+
+chisq.test(response1$Age,response1$complimented)
+chisq.test(response1$Class,response1$complimented)
+chisq.test(response1$encourage,response1$complimented)
+chisq.test(response1$certificate,response1$complimented)
+chisq.test(response1$thisclass,response1$complimented)
+chisq.test(response1$gaveup,response1$complimented)
+chisq.test(response1$feedback,response1$complimented)
+chisq.test(response1$importanceofcomplimented,response1$complimented)
+chisq.test(response1$unnecessary,response1$complimented)
+
+
+table(response1$Age,response1$complimented)
+table(response1$Class,response1$complimented)
+table(response1$encourage,response1$complimented)
+table(response1$certificate,response1$complimented)
+table(response1$thisclass,response1$complimented)
+table(response1$gaveup,response1$complimented)
+table(response1$feedback,response1$complimented)
+table(response1$importanceofcomplimented,response1$complimented)
+table(response1$unnecessary,response1$complimented)
+
+
+test <- multinom(response1$complimented ~ response1$certificate+response1$thisclass)
+summary(test)
+z <- summary(test)$coefficients/summary(test)$standard.errors
+z
+
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
